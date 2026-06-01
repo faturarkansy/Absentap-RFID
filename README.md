@@ -31,6 +31,7 @@ Ensure this project folder is located inside your Laragon root directory, typica
 Open the terminal (you can click the **Terminal** button in Laragon) inside your project folder, then run the following command:
 ```bash
 composer install
+```
 
 ### 4. Running Project
 Right click on Laragon, open the www folder and select projects.
