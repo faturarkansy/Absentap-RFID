@@ -172,5 +172,6 @@ class DatabaseSeeder extends Seeder
         // $user->assignRole($roleSA->id);
 
         Permission::create(['name' => 'HolidayDate']);
+        Permission::create(['name' => 'Parentreport']);
     }
 }

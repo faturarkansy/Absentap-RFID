@@ -29,21 +29,31 @@
         <div class="card">
             <div class="card-header">
                 <div class="row">
-                    <div class="col-md-6 col-12 d-flex justify-content-center justify-content-md-start align-items-center mb-3 mb-md-0">
+                    <div
+                        class="col-md-6 col-12 d-flex justify-content-center justify-content-md-start align-items-center mb-3 mb-md-0">
                         <h3 class="card-title">Data School Start Times</h3>
                     </div>
                     <div class="col-md-6 col-12 d-flex justify-content-center justify-content-md-end mb-md-0 mb-2">
                         <div class="btn-group float-md-right" role="group" aria-label="Button group with nested dropdown">
-                            <button class="btn btn-outline-primary" id="refreshTable" type="button"><i class="fas fa-arrows-rotate"></i> Refresh</button>
-                            <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalView" type="button"><i class="fas fa-plus"></i> Add New</button>
+                            <button class="btn btn-outline-primary" id="refreshTable" type="button"><i
+                                    class="fas fa-arrows-rotate"></i> Refresh</button>
+                            <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalView"
+                                type="button"><i class="fas fa-plus"></i> Add New</button>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <button id="deleteSelected" class="btn btn-sm btn-danger" disabled><i class="fas fa-trash"></i> Delete
+                        Selected</button>
                 </div>
             </div>
             <div class="table-responsive">
                 <table class="table border-bottom w-100" id="Datatable">
                     <thead>
                         <tr>
+                            <th style="width: 30px"><input type="checkbox" id="checkAll"></th>
                             <th>Action</th>
                             <th>Name</th>
                             <th>Times (24 <i class="fa-solid fa-clock ms-1"></i>)</th>
@@ -65,20 +75,27 @@
                     <div class="modal-body">
                         <div class=" mb-3">
                             <label for="nameView">Name Times <span class="text-danger">*</span></label>
-                            <input type="text" id="nameView" class="form-control form-control-sm" name="name" required>
+                            <div class="input-group input-group-sm">
+                                <input type="text" id="nameView" class="form-control form-control-sm" name="name"
+                                    required>
+                                <span class="input-group-text"><i class="fa-solid fa-pen ms-1"></i></span>
+                            </div>
+
                         </div>
                         <div class="row">
                             <div class="col-sm-6 mb-3">
                                 <label for="timesStartView">Start Times <span class="text-danger">*</span></label>
                                 <div class="input-group input-group-sm">
-                                    <input type="text" class="form-control" id="timesStartView" name="time_limit_start" style="border-radius:.25rem 0 0 .25rem; width: 150px" required>
+                                    <input type="text" class="form-control" id="timesStartView" name="time_limit_start"
+                                        style="border-radius:.25rem 0 0 .25rem; width: 150px" required>
                                     <span class="input-group-text">24 <i class="fa-solid fa-clock ms-1"></i></span>
                                 </div>
                             </div>
                             <div class="col-sm-6 mb-3">
                                 <label for="timesEndView">End Times <span class="text-danger">*</span></label>
                                 <div class="input-group input-group-sm">
-                                    <input type="text" class="form-control" id="timesEndView" name="time_limit_end" style="border-radius:.25rem 0 0 .25rem; width: 150px" required>
+                                    <input type="text" class="form-control" id="timesEndView" name="time_limit_end"
+                                        style="border-radius:.25rem 0 0 .25rem; width: 150px" required>
                                     <span class="input-group-text">24 <i class="fa-solid fa-clock ms-1"></i></span>
                                 </div>
                             </div>
@@ -133,7 +150,7 @@
                 processing: true,
                 serverSide: true,
                 order: [
-                    [1, 'asc']
+                    [3, 'asc']
                 ],
                 lengthMenu: [
                     [10, 25, 50, -1],
@@ -144,6 +161,12 @@
                     url: "admin/school-time"
                 },
                 columns: [{
+                        data: 'checkbox',
+                        name: 'checkbox',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
                         data: 'action',
                         name: 'action',
                         className: 'text-center',
@@ -216,8 +239,10 @@
                     processData: false,
                     contentType: false,
                     type: "POST",
-                    url: url,
-                    data: data,
+                    url: 'admin/school-time/delete',
+                    data: {
+                        id: ids
+                    },
                     headers: {
                         'X-CSRF-TOKEN': $('input[name="_token"]').val()
                     },
@@ -264,6 +289,77 @@
                     }
                 });
             });
+            $('#checkAll').on('click', function() {
+                var rows = dataTable.rows({
+                    'search': 'applied'
+                }).nodes();
+                $('input[type="checkbox"]', rows).prop('checked', this.checked);
+                toggleDeleteButton();
+            });
+
+            $('#Datatable tbody').on('change', 'input[type="checkbox"]', function() {
+                if (!this.checked) {
+                    var el = $('#checkAll').get(0);
+                    if (el && el.checked && ('indeterminate' in el)) {
+                        el.indeterminate = true;
+                    }
+                }
+                toggleDeleteButton();
+            });
+
+            $('#deleteSelected').on('click', function() {
+                var ids = [];
+
+                $('.schooltime_checkbox:checked').each(function() {
+                    ids.push($(this).val());
+                });
+
+                if (ids.length > 0) {
+                    $.ajax({
+                        type: "POST",
+                        url: 'admin/school-time/delete',
+                        data: {
+                            id: ids
+                        },
+                        headers: {
+                            'X-CSRF-TOKEN': $('input[name="_token"]').val()
+                        },
+                        success: function(response) {
+                            if (response.status === "success") {
+                                toastr.success(response.message, 'Success !', {
+                                    closeButton: true,
+                                    progressBar: true,
+                                    timeOut: 1500
+                                });
+                                dataTable.draw();
+                            } else {
+                                toastr.error((response.message ? response.message :
+                                    "Please complete your form"), 'Failed !', {
+                                    closeButton: true,
+                                    progressBar: true,
+                                    timeOut: 1500
+                                });
+                            }
+                        },
+                        error: function(response) {
+                            toastr.error(response.responseJSON.message, 'Failed !', {
+                                closeButton: true,
+                                progressBar: true,
+                                timeOut: 1500
+                            });
+                        }
+                    });
+                    $('#deleteSelected').prop('disabled', true);
+                }
+            });
+
+            function toggleDeleteButton() {
+                if ($('.schooltime:checked').length > 0) {
+                    $('#deleteSelected').prop('disabled', false);
+                } else {
+                    $('#deleteSelected').prop('disabled', true);
+                }
+            }
         });
     </script>
 @endsection

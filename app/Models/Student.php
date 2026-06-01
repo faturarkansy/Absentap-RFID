@@ -13,4 +13,9 @@ class Student extends Model
         'id'
     ];
 
+    public function student_rec()
+    {
+        return $this->hasMany(StudentRec::class,'nik', 'student_nik');
+    }
+
 }

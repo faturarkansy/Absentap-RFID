@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use App\Models\SchoolTime;
 use App\Models\Setting;
 use App\Models\Student;
+use App\Models\StudentAbsent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -39,6 +40,10 @@ class FrontendController extends Controller
             $student = Student::where('card_code', $request->code)->first();
             if (isset($student) && !empty($student)) {
                 $date_now = date('Y-m-d');
+                $holiday = DB::table('holidays')->where('date', $date_now)->first();
+                if ($holiday) {
+                    return response()->json(['status' => 'error', 'message' => 'Hari ini libur, presensi ditiadakan!']);
+                }
                 $time_now = date('H:i:s');
                 $student_rec = StudentRec::where([['student_nik', $student->nik], ['rec_date', $date_now]])->first();
                 if ($student_rec == null) {
@@ -157,5 +162,34 @@ class FrontendController extends Controller
     public function login()
     {
         return redirect()->route('admin.home');
+    }
+
+    public function check()
+    {
+        $studentRecs = StudentRec::whereColumn('rec_times', 'rec_sum')->get();
+        $date_now = Carbon::now()->format('Y-m-d');
+
+        foreach ($studentRecs as $rec) {
+            $save_nik = $rec->student_nik;
+            $student = Student::where('nik', $save_nik)->first();
+            
+            if ($student) {
+                $save_nama = $student->nama;
+                $student_absent = [
+                    'nik' => $save_nik,
+                    'name' => $save_nama,
+                    'kehadiran' => 0,
+                    'rec_date' => $date_now,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+                DB::table('student_absents')->insert($student_absent);
+                $response = response()->json(['status' => 'success', 'message' => 'Data has been updated']);
+            } else {
+                
+                $response = response()->json(['error']);
+        }
+        return $response;
+        }
     }
 }

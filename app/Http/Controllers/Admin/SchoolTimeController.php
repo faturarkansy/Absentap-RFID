@@ -43,7 +43,11 @@ class SchoolTimeController extends Controller
             return DataTables::of($data)->addIndexColumn()->addColumn('action', function ($row) {
                 $actionBtn = '<a href="#" data-bs-toggle="modal" data-bs-target="#modalView" data-bs-id="' . $row->id . '" data-bs-name="' . $row->name . '" data-bs-time_start="' . $row->time_limit_start . '" data-bs-time_end="' . $row->time_limit_end . '" class="btn btn-sm btn-outline-primary">Edit</a>';
                 return $actionBtn;
-            })->rawColumns(['action'])->make(true);
+            })
+                ->addColumn('checkbox', function ($row) {
+                    return '<input type="checkbox" class="schooltime" data-id="' . $row->id . '">';
+                })
+                ->rawColumns(['checkbox', 'action'])->make(true);
         }
         return view('admin.school-time', compact('config', 'breadcrumbs'));
     }
@@ -101,6 +105,18 @@ class SchoolTimeController extends Controller
             }
         } else {
             $response = response()->json(['error' => $validator->errors()]);
+        }
+        return $response;
+    }
+
+    public function delete(Request $request)
+    {
+        $id_array = $request->input('id');
+        $data = SchoolTime::whereIn('id', $id_array);
+        if ($data->delete()) {
+            $response = response()->json(['status' => 'success', 'message' => 'Data has been delete']);
+        } else {
+            $response = response()->json(['status' => 'failed', 'message' => 'Data cant delete']);
         }
         return $response;
     }

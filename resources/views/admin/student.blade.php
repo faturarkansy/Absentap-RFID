@@ -28,12 +28,14 @@
         <div class="card">
             <div class="card-header">
                 <div class="row">
-                    <div class="col-md-6 col-12 d-flex justify-content-center justify-content-md-start align-items-center mb-3 mb-md-0">
+                    <div
+                        class="col-md-6 col-12 d-flex justify-content-center justify-content-md-start align-items-center mb-3 mb-md-0">
                         <h3 class="card-title">Data Students</h3>
                     </div>
                     <div class="col-md-6 col-12 d-flex justify-content-center justify-content-md-end mb-md-0 mb-2">
                         <div class="btn-group float-md-right" role="group" aria-label="Button group with nested dropdown">
-                            <button class="btn btn-outline-primary" id="refreshTable" type="button"><i class="fas fa-arrows-rotate"></i> Refresh</button>
+                            <button class="btn btn-outline-primary" id="refreshTable" type="button"><i
+                                    class="fas fa-arrows-rotate"></i> Refresh</button>
                         </div>
                     </div>
                 </div>
@@ -42,7 +44,8 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="activeSelect">Status <span class="text-danger">*</span></label>
-                        <select class="form-select form-control form-control-sm" id="selectActive" name="active" style="width: 100%;">
+                        <select class="form-select form-control form-control-sm" id="selectActive" name="active"
+                            style="width: 100%;">
                             <option value="0" selected>All</option>
                             <option value="non_active">Not Active</option>
                             <option value="active">Active</option>
@@ -50,7 +53,8 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalImport"><i class="fa-solid fa-file-excel"></i> IMPORT EXCEL</button>
+                    <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                        data-bs-target="#modalImport"><i class="fa-solid fa-file-excel"></i> IMPORT EXCEL</button>
                 </div>
             </div>
             <div class="table-responsive">
@@ -111,7 +115,8 @@
                         </table>
                         <div class="mb-3">
                             <label for="number_cardView" class="form-label">Card Number</label>
-                            <input type="text" class="form-control" id="number_cardView" name="card_code" placeholder="Focused Here and Tap Card">
+                            <input type="text" class="form-control" id="number_cardView" name="card_code"
+                                placeholder="Focused Here and Tap Card">
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -135,6 +140,12 @@
                         <div class="mb-3">
                             <label for="formFile" class="form-label">Please choose excel file</label>
                             <input class="form-control" type="file" name="file" id="formFile" required>
+                        </div>
+                        <div class="mb-3">
+                            <a href="{{ asset('file_contoh_excel/example_file.xlsx') }}"
+                                class="btn btn-outline-secondary">
+                                <i class="fas fa-download"></i> Download template file
+                            </a>
                         </div>
                     </div>
                     <div class="modal-footer">

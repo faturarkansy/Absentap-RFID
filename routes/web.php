@@ -19,12 +19,12 @@ use App\Http\Controllers\KatalogController;
 
 
 
-Route::middleware(['guest'])->group(function () {
-});
+Route::middleware(['guest'])->group(function () {});
 
 Route::get('/', [FrontendController::class, 'index']);
 Route::get('/home', [FrontendController::class, 'index'])->name('home');
 Route::post('/send-attendance', [FrontendController::class, 'sendAttendance']);
+Route::post('/check', [FrontendController::class, 'check'])->name('check');
 
 Route::get('/admin/login', [Admin\AuthController::class, 'index'])->name('admin.login');
 Route::post('/admin/sign-in', [Admin\AuthController::class, 'authenticate']);
@@ -35,6 +35,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::put('settings/update-identity', [Admin\SettingController::class, 'update_identity']);
     Route::resource('settings', Admin\SettingController::class);
     Route::get('dashboard', [Admin\DashboardController::class, 'index'])->name('admin.dashboard');
+    Route::get('dashboard-data', [Admin\DashboardController::class, 'getDashboardData']);
     Route::resource('users/roles', Admin\RoleController::class);
     Route::post('users/resetpassword', [Admin\UserController::class, 'resetpassword']);
     Route::resource('users', Admin\UserController::class);
@@ -48,7 +49,12 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::post('students/{id}', [Admin\StudentController::class, 'update']);
     Route::get('school-time', [Admin\SchoolTimeController::class, 'index']);
     Route::post('school-time', [Admin\SchoolTimeController::class, 'store']);
+    Route::post('school-time/delete', [Admin\SchoolTimeController::class, 'delete']);
     Route::post('school-time/{id}', [Admin\SchoolTimeController::class, 'update']);
+    Route::get('parent-report', [Admin\ParentreportController::class, 'index']);
+    Route::post('parent-report', [Admin\ParentreportController::class, 'store']);
+    Route::get('parent-report-data', [Admin\ParentreportController::class, 'getParentReportData']);
+
 
     Route::get('profile', [Admin\ProfileController::class, 'index']);
     Route::put('profile/{id}', [Admin\ProfileController::class, 'update']);

@@ -70,7 +70,8 @@
         </section>
         <footer>
             <div class="container">
-                <p class="text-center mb-0 pb-2">Developed by <img src="images/logoms.png" style="height: 20px; width: 20px;" alt=""> mudahsaja.id</p>
+                <p class="text-center mb-0 pb-2">Developed by <img src="images/logoms.png"
+                        style="height: 20px; width: 20px;" alt=""> mudahsaja.id</p>
             </div>
         </footer>
     </main>
@@ -101,7 +102,8 @@
                     },
                     success: function(response) {
                         if (response.status === "success") {
-                            $('#infoStudent').html(`<h1 class="fullname">` + response.data.student_name + `</h1>
+                            $('#infoStudent').html(`<h1 class="fullname">` + response.data
+                                .student_name + `</h1>
                             <h1 class="nisn">` + response.data.student_nik + `</h1>
                             <div class="alert alert-success d-flex align-items-center" role="alert">
                                 <div class="d-block m-2">` + response.data.attendance_name + `</div>

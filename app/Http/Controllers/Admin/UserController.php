@@ -212,7 +212,7 @@ class UserController extends Controller {
 
         if (!$validator->fails()) {
             $data = $validator->safe()->except(['roles']);
-            DB::beginTransaction();
+            DB::beginTransaction(); 
             try {
                 $user = User::find($id);
                 $destinationPath = public_path('/avatar');

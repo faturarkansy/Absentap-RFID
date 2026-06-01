@@ -34,20 +34,25 @@
         <div class="card">
             <div class="card-header">
                 <div class="row">
-                    <div class="col-md-6 col-12 d-flex justify-content-center justify-content-md-start align-items-center mb-3 mb-md-0">
+                    <div
+                        class="col-md-6 col-12 d-flex justify-content-center justify-content-md-start align-items-center mb-3 mb-md-0">
                         <h3 class="card-title">Data Holiday Record</h3>
                     </div>
                     <div class="col-md-6 col-12 d-flex justify-content-center justify-content-md-end mb-md-0 mb-2">
                         <div class="btn-group float-md-right" role="group" aria-label="Button group with nested dropdown">
-                            <button class="btn btn-outline-primary" id="refreshTable" type="button"><i class="fas fa-arrows-rotate"></i> Refresh</button>
-                            <button data-bs-toggle="modal" data-bs-target="#modalAdd" class="btn btn-sm btn-outline-primary"><i class="fa-solid fa-square-plus"></i> Add Holiday Date</button>
+                            <button class="btn btn-outline-primary" id="refreshTable" type="button"><i
+                                    class="fas fa-arrows-rotate"></i> Refresh</button>
+                            <button data-bs-toggle="modal" data-bs-target="#modalAdd"
+                                class="btn btn-sm btn-outline-primary"><i class="fa-solid fa-square-plus"></i> Add Holiday
+                                Date</button>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="row mb-4">
                 <div class="col-md-4">
-                    <button id="deleteSelected" class="btn btn-sm btn-danger" disabled><i class="fas fa-trash"></i> Delete Selected</button>
+                    <button id="deleteSelected" class="btn btn-sm btn-danger" disabled><i class="fas fa-trash"></i> Delete
+                        Selected</button>
                 </div>
             </div>
             <div class="table-responsive">
@@ -76,10 +81,15 @@
                         <div class="mb-3">
                             <label for="dateSelect" class="d-block">Date <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="dateSelect" name="date" required>
+
                         </div>
                         <div class="mb-3">
                             <label for="" class="d-block">Name <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="name" id="dateName" required>
+                            <div class="input-group input-group-sm">
+                                <input type="text" class="form-control" name="name" id="dateSelect2" required>
+                                <span class="input-group-text"><i class="fa-solid fa-pen ms-1"></i></span>
+                            </div>
+
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -149,13 +159,13 @@
             const bsHoliday = new bootstrap.Modal(modalAdd);
 
             modalAdd.addEventListener('show.bs.modal', function(event) {
-                $('#dateSelect').val('');
-                $('#dateName').val('');
+                $('#dateSelect1').val('');
+                $('#dateSelect2').val('');
             });
 
             modalAdd.addEventListener('hidden.bs.modal', function(event) {
-                $('#dateSelect').val('');
-                $('#dateName').val('');
+                $('#dateSelect1').val('');
+                $('#dateSelect2').val('');
             });
 
             $("#formHoliday").submit(function(e) {

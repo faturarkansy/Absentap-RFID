@@ -13,8 +13,8 @@ class StudentRec extends Model
         'id'
     ];
 
-    public function student()
-    {
-        return $this->hasOne(Student::class, 'student_nik');
-    }
+    // public function student()
+    // {
+    //     return $this->hasOne(Student::class, 'nik', 'student_nik');
+    // }
 }
